@@ -125,7 +125,16 @@ export default function decorate(block) {
   }
 
   placeholderImg = document.querySelector('.secure-delivery-container')?.getAttribute('data-placeholder-image');
-  block.querySelectorAll('img').forEach(async (img) => {
+
+  let images;
+  if (document.querySelector('.secure-delivery-container')?.getAttribute('data-scan-full-page')) {
+    // scan the while if asked for
+    images = document.querySelectorAll('img');
+  } else {
+    images = block.querySelectorAll('img');
+  }
+
+  images.forEach(async (img) => {
     const src = img.getAttribute('src');
     if (isDMOpenAPIUrl(src) && await isSecureAsset(src)) {
       // Identify all secure images and push them into securedImages array
